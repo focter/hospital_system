@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>科室管理</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="p-4">
+<nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">医院系统</a>
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('patient_bp.list_patients') }}">病人管理</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('doctor_bp.list_doctors') }}">医生管理</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('room_bp.list_rooms') }}">病房管理</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('department_bp.list_departments') }}">科室管理</a></li>
+      </ul>
+      <span class="navbar-text me-3">欢迎，{{ session['doctor_name'] }} 医生</span>
+      <a class="btn btn-outline-danger btn-sm" href="{{ url_for('login_bp.logout') }}">退出登录</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+    <h2 class="mb-4">科室信息列表</h2>
+    <a class="btn btn-primary mb-3" href="{{ url_for('department_bp.add_department') }}">添加科室</a>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>科室编号</th>
+            <th>地址</th>
+            <th>电话</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for dept in departments %}
+        <tr>
+            <td>{{ dept.department_id }}</td>
+            <td>{{ dept.address }}</td>
+            <td>{{ dept.telephone }}</td>
+            <td>
+                <a class="btn btn-sm btn-warning" href="{{ url_for('department_bp.edit_department', department_id=dept.department_id) }}">编辑</a>
+                <form method="POST" action="{{ url_for('department_bp.delete_department', department_id=dept.department_id) }}" style="display:inline;">
+                    <button class="btn btn-sm btn-danger" type="submit" onclick="return confirm('确定删除该科室？')">删除</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
